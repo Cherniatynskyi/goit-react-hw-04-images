@@ -18,6 +18,20 @@ const App = () =>{
   const [showButton, setShowButton] = useState(true)
 
   useEffect(() => {
+    const getImages = async () => {
+      setIsLoading(true)
+      try {
+        const fetchedImages = await API.getImages(value, page)
+        if(fetchedImages.length === 0){
+          alert("No results")
+        }
+  
+        setImages(prevState => prevState ? [...prevState, ...fetchedImages] : fetchedImages)
+        setShowButton(!(fetchedImages.length < 12))   
+      }
+      catch (error) {alert("Error")}
+      finally{setIsLoading(false)}
+    } 
     if(value){
       getImages()
     }
@@ -28,21 +42,6 @@ const App = () =>{
     setImages(null)
     setPage(1)
   }
-
-  const getImages = async () => {
-    setIsLoading(true)
-    try {
-      const fetchedImages = await API.getImages(value, page)
-      if(fetchedImages.length === 0){
-        alert("No results")
-      }
-
-      setImages(prevState => prevState ? [...prevState, ...fetchedImages] : fetchedImages)
-      setShowButton(!(fetchedImages.length < 12))   
-    }
-    catch (error) {alert("Error")}
-    finally{setIsLoading(false)}
-  } 
 
   const onImgClick = (e) => {
     const selected = images.filter(el => parseInt(el.id) === parseInt(e.currentTarget.id))
