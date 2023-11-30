@@ -14,7 +14,7 @@ export const Modal = ({image, onClose}) => {
         firstRender.current = true
         window.removeEventListener('keydown', handleKeyDown)
       }
-    }, [])
+    },)
 
     const handleKeyDown = e => {
             if (e.code === 'Escape') {  
